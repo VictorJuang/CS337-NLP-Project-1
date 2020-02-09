@@ -24,7 +24,7 @@ After enter the year, you can choose the information you are interested in. That
 8. Joke
 9. Party
 
-Note that the get results for Dress and Sentiment, you must run Hosts, Nominees, Presenters and Winner first.
+Note that you must run Hosts, Nominees, Presenters and Winner first to get results for Dress and Sentiment.
 
 To exit the program, enter 'x'.
 
