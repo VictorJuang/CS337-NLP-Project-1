@@ -29,13 +29,29 @@ CLEAN_DATA = []
 TWEET_BY_AWARD_DICT = dict()
 ia = IMDb()
 GG_RESULT = {}
-
+YEAR_ALL = None
 #  divide_tweets many delete some entries in raw data
+def make_year(year):
+    global OFFICIAL_AWARDS
+    global TWEETS
+    global CLEAN_DATA
+    global TWEET_BY_AWARD_DICT
+    global GG_RESULT
+    global YEAR_ALL
+    if YEAR_ALL != year:
+        OFFICIAL_AWARDS = []
+        TWEETS = []
+        CLEAN_DATA = []
+        TWEET_BY_AWARD_DICT = dict()
+        GG_RESULT = {}
+        YEAR_ALL = year
+
 
 def get_hosts(year):
     '''Hosts is a list of one or more strings. Do NOT change the name
     of this function or what it returns.'''
     # Your code here
+    make_year(year)
     global GG_RESULT
     if "hosts" in GG_RESULT:
         return GG_RESULT["hosts"]
@@ -103,6 +119,7 @@ def get_awards(year):
     '''Awards is a list of strings. Do NOT change the name
     of this function or what it returns.'''
     # Your code here
+    make_year(year)
     global GG_RESULT
     if "awards" in GG_RESULT:
         return GG_RESULT["awards"]
@@ -211,6 +228,7 @@ def get_nominees(year):
     names as keys, and each entry a list of strings. Do NOT change
     the name of this function or what it returns.'''
     # Your code here
+    make_year(year)
     global GG_RESULT
     if "nominees" in GG_RESULT:
         return GG_RESULT["nominees"]
@@ -346,6 +364,7 @@ def get_nominees(year):
     return nominees
 
 def get_winner(year):
+    make_year(year)
     global GG_RESULT
     if "winner" in GG_RESULT:
         return GG_RESULT["winner"]
@@ -469,6 +488,7 @@ def get_winner(year):
 
 def get_presenters(year):
     #code for presenters
+    make_year(year)
     global GG_RESULT
     if "presenters" in GG_RESULT:
         return GG_RESULT["presenters"]
@@ -536,6 +556,17 @@ def pre_ceremony():
     plain text file. It is the first thing the TA will run when grading.
     Do NOT change the name of this function or what it returns.'''
     # Your code here
+    global OFFICIAL_AWARDS
+    global TWEETS
+    global CLEAN_DATA
+    global TWEET_BY_AWARD_DICT
+    global GG_RESULT
+    OFFICIAL_AWARDS = []
+    TWEETS = []
+    CLEAN_DATA = []
+    TWEET_BY_AWARD_DICT = dict()
+    GG_RESULT = {}
+    
     print("Pre-ceremony processing complete.")
     return
     
@@ -950,7 +981,7 @@ def find_party_main_function(year):
     for item in data:
         if p_tweet[0][0] in item:
             most_party_twitter.append(item)
-    print ("Party People Most Talk:", p_tweet[0][0])
+    print ("Party People Most Talk:", p_tweet[0][0] + ' party')
     print ("Sentiment Score for the Party:", sentiment(most_party_twitter))
     
     
