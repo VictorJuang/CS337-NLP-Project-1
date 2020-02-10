@@ -18,7 +18,7 @@ python gg_api.py
 ```
 After running the command, you can enter the year for tweet data. Please make sure that location of tweet data file (e.g., gg2020.json) should be the same as the location that you run the command.
 
-After enter the year, you can choose the information you are interested in. That is, enter the number 1 ~ 9. 
+After entering the year, you can choose the information you are interested in. That is, enter the number 1 ~ 9. 
 1. Hosts
 2. Awards
 3. Nominees
