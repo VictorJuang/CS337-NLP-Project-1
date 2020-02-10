@@ -8,6 +8,8 @@ https://github.com/VictorJuang/CS337-NLP-Project-1.git
 Please run the following command.
 ```
 pip install -r requirements.txt
+python -m spacy download en_core_web_sm
+python -m nltk.downloader stopwords
 ```
 
 # How to use
