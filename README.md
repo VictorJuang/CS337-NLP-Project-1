@@ -26,8 +26,8 @@ After entering the year, you can choose the information you are interested in. T
 3. Nominees
 4. Presenters
 5. Winner
-6. Dress
-7. Sentiment
+6. Dress (this should take a lot of time to test 2015, recommend test on the other years)
+7. Sentiment (this should take a lot of time to test 2015, recommend test on the other years)
 8. Joke
 9. Party
 
@@ -60,3 +60,7 @@ Finally, we output the name that has been mentioned the most and its correspondi
 ## Sentiment
 
 For each entity, we first find Tweets that mentioned it, then we calculate their average sentiment score, and eventually map such score to an adjective.
+
+## Party
+
+For the party search, we use the pattern "at XXXX(any number of words) party" to search the tweets, and calculate the frequence of each party and remove the non-sense party through the stopwords defined by ourselves. Then, we select the most frequent mentioned party and take the tweets mentioned this party and calculate the sentiment score.
