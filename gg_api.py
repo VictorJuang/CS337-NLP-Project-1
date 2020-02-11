@@ -18,6 +18,7 @@ import copy
 from textblob import TextBlob
 import numpy as np
 import random
+from collections import Counter
 
 OFFICIAL_AWARDS_1315 = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
 OFFICIAL_AWARDS_1819 = ['best motion picture - drama', 'best motion picture - musical or comedy', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best performance by an actress in a motion picture - musical or comedy', 'best performance by an actor in a motion picture - musical or comedy', 'best performance by an actress in a supporting role in any motion picture', 'best performance by an actor in a supporting role in any motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best motion picture - animated', 'best motion picture - foreign language', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best television series - musical or comedy', 'best television limited series or motion picture made for television', 'best performance by an actress in a limited series or a motion picture made for television', 'best performance by an actor in a limited series or a motion picture made for television', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best performance by an actress in a television series - musical or comedy', 'best performance by an actor in a television series - musical or comedy', 'best performance by an actress in a supporting role in a series, limited series or motion picture made for television', 'best performance by an actor in a supporting role in a series, limited series or motion picture made for television', 'cecil b. demille award']
@@ -30,7 +31,7 @@ TWEET_BY_AWARD_DICT = dict()
 ia = IMDb()
 GG_RESULT = {}
 YEAR_ALL = None
-#  divide_tweets many delete some entries in raw data
+#  tweets_by_awards many delete some entries in raw data
 def make_year(year):
     global OFFICIAL_AWARDS
     global TWEETS
@@ -372,7 +373,7 @@ def get_winner(year):
     stop_list_people = ['asian','series','the', 'best', '-', 'award', 'for', 'or', 'made', 'in', 'a', 'by', 'performance', 'an', 'golden', 'globes', 'role', 'motion', 'picture', 'best', 'supporting']
     #stop_list_people =['Motion Picture','Best Actor','Best Supporting']
 
-    divide_tweets(year)
+    tweets_by_awards(year)
     
     winners = {}
     for award in OFFICIAL_AWARDS:
@@ -494,12 +495,13 @@ def get_presenters(year):
         return GG_RESULT["presenters"]
     start_time = time.time()
     
-    divide_tweets(year)
+    tweets_by_awards(year)
     end_time = time.time()
     print(end_time - start_time)
     print ("Done Preprocessing...")
     
     presenters_dict_by_awards = {}
+    clean_presenters_dict_by_awards = {}
     stop = ["original", "originals", "best", "screenplay", "feature", "animated", "actress", "motion", "picture", 'lifetime', "series", "comedy", "actor", "supporting", "movie", "foreign", "golden", "award", "goldenglobes", "globes", "film"]
 
     single_presenter_pattern = re.compile(r'[A-Z][a-z]+\s[A-Z][a-z]+(?=\spresent|\sis\spresenting|\sis\sintroducing|\sgive|\sis\sgiving|\spronounce|\sis\spronouncing|\saward|\sis\sawarding)')
@@ -507,10 +509,11 @@ def get_presenters(year):
         
     for award in TWEET_BY_AWARD_DICT:
         presenters_dict_by_awards[award] = []
-
+        clean_presenters_dict_by_awards[award] = []
+        #freq[award] = []
         for tweet in TWEET_BY_AWARD_DICT[award]:
-            tweet = re.sub(r'&amp;', 'and', tweet)
-            tweet = re.sub(r'\s+@\w+', '', tweet)
+            tweet = re.sub(r'&amp;', 'and', tweet) # change special symbol to 'and'
+            tweet = re.sub(r'\s+@\w+', '', tweet) # remove @ stuffs
             multiple_presenters = re.findall(multiple_presenters_pattern, tweet)
 
             for presenter in multiple_presenters:
@@ -520,10 +523,8 @@ def get_presenters(year):
                     continue
 
                 pp = presenter.split(' and ')
-                pt = pp[1]
-                ptt = pt.split(' ')
-                pttname = ptt[0:2]
-                p2 = ' '.join(pttname)
+                pt = pp[1].split(' ')[:2]     # just take two words after "and", even if just one word, :2 should be ok
+                p2 = ' '.join(pt)
                 if any(word in p2.lower() for word in stop):
                     continue
 
@@ -533,11 +534,9 @@ def get_presenters(year):
                 person = ia.search_person(p2)
                 if person:
                     p2 = person[0]['name'].lower()
-                if p1 not in presenters_dict_by_awards[award]:
-                    presenters_dict_by_awards[award].append(p1)
-                if p2 not in presenters_dict_by_awards[award]:
-                    presenters_dict_by_awards[award].append(p2)
-
+                presenters_dict_by_awards[award].append(p1)
+                presenters_dict_by_awards[award].append(p2)
+                
             single_presenter = re.findall(single_presenter_pattern, tweet)
             for presenter in single_presenter:
                 if any(word in presenter.lower() for word in stop):
@@ -545,8 +544,15 @@ def get_presenters(year):
                 person = ia.search_person(presenter)
                 if person:
                     presenter = person[0]['name'].lower()
-                if presenter not in presenters_dict_by_awards[award]:
-                    presenters_dict_by_awards[award].append(presenter)
+                presenters_dict_by_awards[award].append(presenter)
+			
+        clean_presenters_dict_by_awards[award] = list(set(presenters_dict_by_awards[award]))
+        if len(clean_presenters_dict_by_awards[award]) >= 3:
+            r = Counter(presenters_dict_by_awards[award])
+            presenters_dict_by_awards[award] = [r.most_common(2)[0][0], r.most_common(2)[1][0]]
+        else:
+            presenters_dict_by_awards[award] = clean_presenters_dict_by_awards[award]
+		
     GG_RESULT["presenters"] = presenters_dict_by_awards
     return presenters_dict_by_awards
 
@@ -587,15 +593,18 @@ def load_data(year):
 def get_tweets(year):
     global TWEETS
     try:
-        if year == "2013" or year == "2015"or year == "2018"or year == "2019":
-            f = open('gg'+year+'.json')
-            data = json.load(f)
-            TWEETS = [tweet['text'] for tweet in data]
-            #return TWEETS
-        else:                                              
-            with open('gg'+year+'.json', encoding='utf8') as json_file:
-                data = [json.loads(line) for line in json_file]
-            TWEETS = [tweet['text'] for tweet in data]
+        f = open('gg'+year+'.json')
+        data = json.load(f)
+        TWEETS = [tweet['text'] for tweet in data]
+        #if year == "2013" or year == "2015"or year == "2018"or year == "2019":
+        #    f = open('gg'+year+'.json')
+        #    data = json.load(f)
+        #    TWEETS = [tweet['text'] for tweet in data]
+        #    #return TWEETS
+        #else:                                              
+        #    with open('gg'+year+'.json', encoding='utf8') as json_file:
+        #        data = [json.loads(line) for line in json_file]
+        #    TWEETS = [tweet['text'] for tweet in data]
             #return TWEETS
         TWEETS.sort()
         TWEETS = list(TWEETS for TWEETS,_ in itertools.groupby(TWEETS))
@@ -638,7 +647,7 @@ def data_clean():
     else:
         print("pass clean")
 
-def divide_tweets(year):
+def tweets_by_awards(year):
 
     print("\nProcessing data of year {}".format(year))
     #print("Might take under 4 minutes for 2013 and 5-6 minutes for 2015 ")
@@ -654,95 +663,75 @@ def divide_tweets(year):
     for award in OFFICIAL_AWARDS:
         TWEET_BY_AWARD_DICT[award] = []
 
-    to_delete = ['-', 'a', 'an', 'award', 'best', 'by', 'for', 'in', 'made', 'or', 'performance', 'role',
+    not_care = ['-', 'a', 'an', 'award', 'best', 'by', 'for', 'in', 'made', 'or', 'performance', 'role',
                  'feature', 'language']
 
-    fresh_names = dict()
+    new_award_names = dict()
     for award in OFFICIAL_AWARDS:
-        fresh_names[award] = [[item for item in award.split() if not item in to_delete]]
+        new_award_names[award] = [[item for item in award.split() if not item in not_care]]
 
     for award in OFFICIAL_AWARDS:
         if "television" in award:
             for word in ['tv', 't.v.']:
-                extra = award.replace("television", word)
-                fresh_names[award].append([item for item in extra.split() if not item in to_delete])
+                new_name = award.replace("television", word)
+                new_award_names[award].append([item for item in new_name.split() if not item in not_care])
 
         if "motion picture" in award:
             for word in ['movie', 'film']:
-                extra = award.replace("motion picture", word)
-                fresh_names[award].append([item for item in extra.split() if not item in to_delete])
+                new_name = award.replace("motion picture", word)
+                new_award_names[award].append([item for item in new_name.split() if not item in not_care])
 
 
         if "film" in award:
             for word in ['motion picture', 'movie']:
-                extra = award.replace("film", word)
-                fresh_names[award].append([item for item in extra.split() if not item in to_delete])
+                new_name = award.replace("film", word)
+                new_award_names[award].append([item for item in new_name.split() if not item in not_care])
 
         if "comedy or musical" in award:
             for word in ['comedy', 'musical']:
-                extra = award.replace("comedy or musical", word)
-                fresh_names[award].append([item for item in extra.split() if not item in to_delete])
+                new_name = award.replace("comedy or musical", word)
+                new_award_names[award].append([item for item in new_name.split() if not item in not_care])
 
 
         if "series, mini-series or motion picture made for television" in award:
             for word in ['series', 'mini-series', 'miniseries', 'tv', 'television', 'tv movie', 'tv series', 'television series']:
-                extra = award.replace("series, mini-series or motion picture made for television", word)
-                fresh_names[award].append([item for item in extra.split() if not item in to_delete])
+                new_name = award.replace("series, mini-series or motion picture made for television", word)
+                new_award_names[award].append([item for item in new_name.split() if not item in not_care])
 
             
 
         if "mini-series or motion picture made for television" in award:
             for word in ['television movie', 'mini-series', 'miniseries', 'tv movie']:
-                extra = award.replace("mini-series or motion picture made for television", word)
-                fresh_names[award].append([item for item in extra.split() if not item in to_delete])
+                new_name = award.replace("mini-series or motion picture made for television", word)
+                new_award_names[award].append([item for item in new_name.split() if not item in not_care])
 
         if "television series" in award:
             for word in ['tv', 't.v.', 'television', 'series']:
-                extra = award.replace("television series", word)
-                fresh_names[award].append([item for item in extra.split() if not item in to_delete])
+                new_name = award.replace("television series", word)
+                new_award_names[award].append([item for item in new_name.split() if not item in not_care])
 
 
         if "television series - comedy or musical" in award:
 
             for word in ["tv comedy", "tv musical", "comedy series", "t.v. comedy", "t.v. musical", "television comedy", "television musical"]:
-                extra = award.replace("television series - comedy or musical", word)
-                fresh_names[award].append([item for item in extra.split() if not item in to_delete])
+                new_name = award.replace("television series - comedy or musical", word)
+                new_award_names[award].append([item for item in new_name.split() if not item in not_care])
 
         if "television series - drama" in award:
             for word in ["tv drama", "drama series", "television drama", "t.v. drama"]:
-                extra = award.replace("television series - drama", word)
-                fresh_names[award].append([item for item in extra.split() if not item in to_delete])
+                new_name = award.replace("television series - drama", word)
+                new_award_names[award].append([item for item in new_name.split() if not item in not_care])
 
     OFFICIAL_AWARDS.sort(key=lambda s: len(s), reverse=True)
-#     print('####################FRESH NAMES##########################')
-#     print(fresh_names)
-#     print('#########################################################')
-    #all(word in tweet.lower() for word in award_dict[award]['search'])
-    #for award in OFFICIAL_AWARDS:
-    #    tweet_length = len(TWEETS)
-    #    for i in range(tweet_length - 1, -1, -1):
-    #        tweet = TWEETS[i]
-    #        for extra in fresh_names[award]:
-    #            flag = True
-    #            for word in extra:
-    #                if flag == True:
-    #                    flag = flag and word.lower() in tweet.lower()
-    #
-    #            if flag == True:
-    #                TWEET_BY_AWARD_DICT[award].append(tweet)
-    #                del TWEETS[i]
-    #                break
+
     for award in OFFICIAL_AWARDS:
         tweet_length = len(TWEETS)
         for i in range(tweet_length - 1, -1, -1):
             tweet = TWEETS[i]
             
-            for extra in fresh_names[award]:
+            for item in new_award_names[award]:
 
-                if all(word in tweet.lower() for word in extra):
-                #extra_tmp = set(extra)
-                #tweet_tmp = set(tweet.split())
-                #if len(extra_tmp) == len(extra_tmp.intersection(tweet_tmp)):
+                if all(word in tweet.lower() for word in item):
                     TWEET_BY_AWARD_DICT[award].append(tweet)
                     del TWEETS[i]
                     break
