@@ -37,8 +37,9 @@ To exit the program, enter 'x'.
 
 # Other notes
 
-For data in 2013, it may take 10 to 30 seconds to run each function. For data in 2015, it may take minutes to run each function. Note that Presenters may need about 3 minutes to process.
+For data in 2013, it may take 10 to 30 seconds to run each function. For data in 2015, it may take minutes to run each function. 
 
+We put the autograder results of 1315 on our end in the img folder. And we also put some additional results in this folder.
 
 # Additional Goals
 ## Red carpet (Dress)
