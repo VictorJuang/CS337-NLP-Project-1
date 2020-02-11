@@ -26,8 +26,8 @@ After entering the year, you can choose the information you are interested in. T
 3. Nominees
 4. Presenters
 5. Winner
-6. Dress (this should take a lot of time to test 2015, recommend test on the other years)
-7. Sentiment (this should take a lot of time to test 2015, recommend test on the other years)
+6. Dress (this should take a lot of time to test 2015, recommend testing on the other years)
+7. Sentiment (this should take a lot of time to test 2015, recommend testing on the other years)
 8. Joke
 9. Party
 
