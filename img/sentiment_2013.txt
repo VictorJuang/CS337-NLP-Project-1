@@ -1,0 +1,123 @@
+Enter a number below to get corresponding information.
+1. Hosts
+2. Awards
+3. Nominees
+4. Presenters
+5. Winner
+6. Dress
+7. Sentiment
+8. Joke
+9. Party
+7
+pass load
+pass clean
+
+amy poehler neutral
+tina fey neutral
+newsroom neutral
+veteran directors at impressive
+old british neutral
+life of pi impressive
+lincoln, neutral
+lincoln appreciated
+downton abbey appreciated
+nigger unchained impressive
+naomi watts neutral
+logan lerman impressive
+newsroom 2 fair
+jon hamm acceptable
+silver linings playbook impressive
+moonrise kingdom neutral
+les mis - impressive
+bill murray, acceptable
+disappointed-looking cooper impressive
+jack black unpleasant
+brave delightful
+hotel transylvania appreciated
+frankenweenie acceptable
+wreck it ralph delightful
+sofia vergara appreciated
+nicole kidman acceptable
+omg leonardo dicaprio appreciated
+george w bush acceptable
+mandy patinkin neutral
+leo, acceptable
+tight race acceptable
+ben affleck acceptable
+kathryn bigelow acceptable
+globe and appreciated
+means tarantino impressive
+all i know neutral
+cloud atlas acceptable
+one-point safety delightful
+civil wars agreeable
+hooper suddenly neutral
+really wish acceptable
+safe and sound impressive
+adele appreciated
+newsroom appreciated
+jeff daniels appreciated
+breaking bad irritating
+jeff daniels, neutral
+logan lerman impressive
+newsroom 2 agreeable
+jon hamm neutral
+bill murray, neutral
+disappointed-looking cooper impressive
+jack black unpleasant
+hatfields impressive
+a it appreciated
+nicole kidman acceptable
+benedict cumberbatch neutral
+mandy patinkin acceptable
+mandy patinkin appreciated
+maggie smith neutral
+ed harris neutral
+julianne moore acceptable
+kevin costner appreciated
+lena dunham acceptable
+anne hathaway appreciated
+don cheadle neutral
+jennifer lawrence appreciated
+christoph waltz impressive
+hugh jackman appreciated
+claire danes neutral
+damian lewis impressive
+jessica chastain acceptable
+daniel day neutral
+game change irritating
+girls appreciated
+les miserables impressive
+life of pi impressive
+skyfall by delightful
+quentin tarantino: 20 years of filmmaking appreciated
+ben affleck appreciated
+homeland neutral
+argo impressive
+brave delightful
+amour austria acceptable
+jodie foster appreciated
+robert downey jr. acceptable
+julia roberts acceptable
+george clooney appreciated
+dustin hoffman acceptable
+sacha baron cohen appreciated
+arnold schwarzenegger neutral
+sylvester stallone acceptable
+bradley cooper acceptable
+kate hudson neutral
+halle berry appreciated
+amanda seyfried neutral
+robert pattinson neutral
+jason statham appreciated
+jennifer lopez neutral
+jennifer lopez appreciated
+paul rudd appreciated
+nathan fillion appreciated
+lea michele neutral
+jay leno appreciated
+jimmy fallon acceptable
+jason bateman acceptable
+aziz ansari appreciated
+kerry washington acceptable
+dennis quaid acceptable
