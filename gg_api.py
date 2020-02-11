@@ -780,7 +780,7 @@ def get_additional(year, addition_str):
                         all_list.append(per) 
 
                     
-    print(person_list)
+    #print(person_list)
     if addition_str == "sentiment":
         additional(all_list, addition_str, load_data_party(year))
     else:
