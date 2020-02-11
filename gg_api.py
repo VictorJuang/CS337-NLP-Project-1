@@ -487,6 +487,7 @@ def get_winner(year):
     GG_RESULT["winner"] = winners                
     return winners
 
+
 def get_presenters(year):
     #code for presenters
     make_year(year)
@@ -647,6 +648,8 @@ def data_clean():
     else:
         print("pass clean")
 
+# reference to https://github.com/amitadate/EECS-337-NLP-Project-01.git
+# change "for loop" to speed up
 def tweets_by_awards(year):
 
     print("\nProcessing data of year {}".format(year))
