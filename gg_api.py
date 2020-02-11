@@ -912,15 +912,18 @@ def additional(entities: list, typ: str, data: list):
             print(entity, word)
 
 def load_data_party(year):
-    if year == "2013" or year == "2015"or year == "2018"or year == "2019":
-        f = open('gg'+year+'.json')
-        data = json.load(f)
-        TWEETS = [tweet['text'] for tweet in data]
-        #return TWEETS
-    else:                                              
-        with open('gg'+year+'.json', encoding='utf8') as json_file:
-            data = [json.loads(line) for line in json_file]
-        TWEETS = [tweet['text'] for tweet in data]
+    f = open('gg'+year+'.json')
+    data = json.load(f)
+    TWEETS = [tweet['text'] for tweet in data]
+    #if year == "2013" or year == "2015"or year == "2018"or year == "2019":
+    #    f = open('gg'+year+'.json')
+    #    data = json.load(f)
+    #    TWEETS = [tweet['text'] for tweet in data]
+    #    #return TWEETS
+    #else:                                              
+    #    with open('gg'+year+'.json', encoding='utf8') as json_file:
+    #        data = [json.loads(line) for line in json_file]
+    #    TWEETS = [tweet['text'] for tweet in data]
             #return TWEETS
     TWEETS.sort()
     TWEETS = list(TWEETS for TWEETS,_ in itertools.groupby(TWEETS))
