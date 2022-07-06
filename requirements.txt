@@ -73,7 +73,7 @@ cssselect==1.1.0
 cycler==0.10.0
 idna==2.8
 kiwisolver==1.1.0
-lxml==4.4.2
+lxml==4.9.1
 nltk==3.4.5
 pyquery==1.4.1
 requests==2.22.0
